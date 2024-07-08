@@ -6,9 +6,9 @@ const loginDetails = async (req, res) => {
     const {  email, password,role, } = req.body;
 
     try {
-       
+       let user
         if (role === 'employer') {
-        let   user = await employerSignupModel.login(email, password);
+           user = await employerSignupModel.login(email, password);
         } else if (role === 'employee') {
             user = await employeeSignupModel.login(email, password);
         } else {
