@@ -83,13 +83,13 @@ const updateEmployeeDetails = async (req, res) => {
 
         // store data into db+
         const updateFields = { firstName, lastName, mobileNumber, role, currentCompany, location };
-        await employeeSignupModel.findByIdAndUpdate(
+        const updatedEmployeeDetails = await employeeSignupModel.findByIdAndUpdate(
             { _id: id },
           { $set: updateFields},
             { new: true },
         )
 
-        res.status(200).json({ message : "Data Successfully Updated" })
+        res.status(200).json({updatedEmployeeDetails })
 
     } catch (err) {
         res.status(400).json({ error: err.message })
