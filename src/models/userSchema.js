@@ -53,6 +53,12 @@ const employerSignupSchema = mongoose.Schema({
     address: {
         type: AddressSchema,
         required: true
+    },
+    employeesCount:{
+        type:Number
+    },
+    headQuarters:{
+        type: String
     }
 },
     { timestamp: true }

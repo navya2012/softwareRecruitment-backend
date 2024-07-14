@@ -71,7 +71,7 @@ const employeeSignUpDetails = async (req, res) => {
 const updateEmployeeDetails = async (req, res) => {
     const id = req.params.id
     const { firstName, lastName, mobileNumber, role, currentCompany, location } = req.body
-    // console.log(id, 'selected id')
+
     try {
         // Validation check
         const error = validationResult(req).formatWith(({ msg }) => {
@@ -81,15 +81,68 @@ const updateEmployeeDetails = async (req, res) => {
             return res.status(400).json({ error: error.array() });
         }
 
+        if (!id) {
+            return res.status(404).json({ error: 'Employee User ID is not provided' });
+        }
+
         // store data into db+
-        const updateFields = { firstName, lastName, mobileNumber, role, currentCompany, location };
+        const updateEmployeeFields = { firstName, lastName, mobileNumber, role, currentCompany, location };
         const updatedEmployeeDetails = await employeeSignupModel.findByIdAndUpdate(
             { _id: id },
-          { $set: updateFields},
+          { $set: updateEmployeeFields},
+            { new: true },
+        )
+        if (!updatedEmployeeDetails) {
+            return res.status(404).json({ error: 'Employee User not found' });
+        }
+
+        const response = updatedEmployeeDetails.toObject();
+        response.employee_id = response._id;
+        delete response._id;
+
+        res.status(200).json({ updateEmployeeDetails: response });
+
+    } catch (err) {
+        res.status(400).json({ error: err.message })
+    }
+}
+
+
+//update employee details
+const updateEmployerDetails = async (req, res) => {
+    const id = req.params.id
+    const { companyName, mobileNumber, companyType, password, address, employeesCount, headQuarters } = req.body
+    try {
+        // Validation check
+        const error = validationResult(req).formatWith(({ msg }) => {
+            return { msg };
+        });
+        if (!error.isEmpty()) {
+            return res.status(400).json({ error: error.array() });
+        }
+
+        if (!id) {
+            return res.status(404).json({ error: 'Employer User ID is not provided' });
+        }
+
+        // store data into db+
+        const updateEmployerFields = { companyName, mobileNumber, companyType, password, address, employeesCount, headQuarters };
+
+        const updatedEmployerDetails = await employerSignupModel.findByIdAndUpdate(
+            { _id: id },
+          { $set: updateEmployerFields},
             { new: true },
         )
 
-        res.status(200).json({updatedEmployeeDetails })
+        if (!updatedEmployerDetails) {
+            return res.status(404).json({ error: 'Employer User not found' });
+        }
+
+        const response = updatedEmployerDetails.toObject();
+        response.employer_id = response._id;
+        delete response._id;
+
+        res.status(200).json({ updateEmployerDetails: response });
 
     } catch (err) {
         res.status(400).json({ error: err.message })
@@ -101,5 +154,6 @@ module.exports = {
     employerSignUpDetails,
     employeeSignUpDetails,
     signupValidation,
-    updateEmployeeDetails
+    updateEmployeeDetails,
+    updateEmployerDetails
 }

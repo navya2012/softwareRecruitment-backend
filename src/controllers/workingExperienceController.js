@@ -4,13 +4,11 @@ const { workingExperienceModel } = require("../models/workingExperienceSchema")
 
 const workingExperienceController = async (req, res) => {
     const id = req.params.id;
-
     const { technologies, experience, location, graduate, language, noticePeriod } = req.body
-
-    const employeeUser_id =   req.employeeUser._id
+    const employee_id =   req.employee._id
 
     try{
-        const fieldsUpdate = { employeeUser_id, technologies, experience, location, graduate, language, noticePeriod  }
+        const fieldsUpdate = { employee_id, technologies, experience, location, graduate, language, noticePeriod  }
 
         let workingExperienceData;
 
@@ -21,6 +19,10 @@ const workingExperienceController = async (req, res) => {
                 { $set : fieldsUpdate },
                 { new: true , runValidators : true}
             );
+
+            if (!workingExperienceData) {
+                return res.status(404).json({ error: "Employee User not found" });
+            }
         } else {
 
             workingExperienceData = new workingExperienceModel(fieldsUpdate);

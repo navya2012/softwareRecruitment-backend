@@ -38,7 +38,7 @@ const workingExperienceSchema = mongoose.Schema({
         required: true,
          default:'Immediately'
     },
-    employeeUser_id:{
+    employee_id:{
         type: String,
         required: true
     }

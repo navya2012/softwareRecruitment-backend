@@ -1,9 +1,10 @@
 
+
 const jwt = require('jsonwebtoken')
-const { employeeSignupModel } = require('../models/userSchema')
+const {  employerSignupModel } = require('../models/userSchema')
 
 
-const authUser = async (req,res,next) => {
+const authEmployerUser = async (req,res,next) => {
     // contains all the tokens
     const {authorization} = req.headers
    
@@ -21,13 +22,14 @@ const authUser = async (req,res,next) => {
         if (!_id) {
             return res.status(401).json({ error: "Invalid token" });
         }
-        console.log(_id)
+        console.log("middleware", _id)
 
         //checking id is present in db or not- only checking id
-        req.employee = await employeeSignupModel.findById(_id).select("_id")
+        req.employer = await employerSignupModel.findById(_id).select("_id")
+        console.log("checking id ", req.employer)
        
-        if (!req.employee) {
-            return res.status(401).json({ error: "Employee User not found " });
+        if (!req.employer) {
+            return res.status(401).json({ error: "Employer User not found " });
         }
 
         //after checking move to next operations
@@ -39,4 +41,4 @@ const authUser = async (req,res,next) => {
     }
 }
 
-module.exports = authUser
+module.exports = authEmployerUser
