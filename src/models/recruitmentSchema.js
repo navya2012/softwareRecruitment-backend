@@ -39,19 +39,16 @@ const recruitmentSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    jobApplied: [
-        {
-            status: {
-                type: String,
-                enum: ['Applied', 'Denied'],
-                required: true
-            },
-            employee_id: {
-                type: String,
-                required: true
-            }
-        }
-    ]
+    jobAppliedStatus : {
+        type: String,
+        enum: ['Applied', 'Denied'],
+        required: true,
+        default: "Denied"
+    },
+    employee_id: {
+        type: String,
+        default:null
+    }
 },
     { timestamp: true }
 )

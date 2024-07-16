@@ -3,11 +3,39 @@ const { jobRecruitmentModel } = require("../models/recruitmentSchema")
 
 //get recruitment posts
 const getJobRecruitmentPosts = async (req, res) => {
-    //const employee_id = req.employee._id
-    // console.log( "get Posts", employee_id)
     try {
         const getJobPostsData = await jobRecruitmentModel.find()
         res.status(200).json({ getJobPostsData })
+    }
+    catch (err) {
+        res.status(400).json({ error: err.message })
+    }
+}
+
+const updateJobRecruitmentPosts = async(req, res) => {
+            const jobId = req.params.id
+            const employee_id = req.employee._id
+    try {
+
+        if (!jobId) {
+            return res.status(404).json({ error: 'Job Post ID is not provided' });
+        }
+
+        const updatedJobPosts = await jobRecruitmentModel.findOneAndUpdate(
+            { _id: jobId,  },
+            { $set: { 
+                "jobAppliedStatus": "Applied" ,
+                "employee_id" : employee_id
+            } },
+            { new: true }
+        );
+
+        if (!updatedJobPosts) {
+            return res.status(404).json({ error: "Job post not found" });
+        }
+
+        res.status(200).json({ updatedJobPosts });
+
     }
     catch (err) {
         res.status(400).json({ error: err.message })
@@ -37,5 +65,6 @@ const createJobRecruitmentPosts = async (req, res) => {
 
 module.exports = {
     getJobRecruitmentPosts,
-    createJobRecruitmentPosts
+    createJobRecruitmentPosts,
+    updateJobRecruitmentPosts
 }
