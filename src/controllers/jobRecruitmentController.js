@@ -14,7 +14,7 @@ const getJobRecruitmentPosts = async (req, res) => {
 
 const updateJobRecruitmentPosts = async(req, res) => {
             const jobId = req.params.id
-            const employee_id = req.employee._id
+            const employee_id = req.user._id
     try {
 
         if (!jobId) {
@@ -46,9 +46,8 @@ const updateJobRecruitmentPosts = async(req, res) => {
 //post recruitment posts
 const createJobRecruitmentPosts = async (req, res) => {
     const { companyName, role, technologies, experience, location, graduate, language, noticePeriod } = req.body
+    const employer_id =   req.user._id
 
-    const employer_id = req.employer._id
-    console.log("create Posts", employer_id)
     try {
         const createPostFields = { employer_id, companyName, role, technologies, experience, location, graduate, language, noticePeriod }
 
