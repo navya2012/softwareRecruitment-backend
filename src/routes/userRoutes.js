@@ -6,7 +6,7 @@ const router = express.Router()
 const { userSignupDetails, signupValidation, userLoginDetails, updateUserDetails } = require("../controllers/userController")
 const authUserDetails = require("../middleware/authUserMiddleware")
 const { workingExperienceController } = require("../controllers/workingExperienceController")
-const { createJobRecruitmentPosts, updateJobRecruitmentPosts, getJobRecruitmentPosts } = require("../controllers/jobRecruitmentController")
+const { createJobRecruitmentPosts, updateJobRecruitmentPosts, getJobRecruitmentPosts, updateJobAppliedStatus } = require("../controllers/jobRecruitmentController")
 
 
 
@@ -24,7 +24,8 @@ router.post('/employee/working-experience/:id?', authUserDetails('employee'), wo
 // job posts
 router.post('/employer/create-recruitment-posts', authUserDetails('employer'), createJobRecruitmentPosts);
 router.get('/employee/get-recruitment-posts',  getJobRecruitmentPosts);
-router.patch('/employee/update-recruitment-posts/:id', authUserDetails('employee'), updateJobRecruitmentPosts )
+router.patch('/employee/update-job-applied-status/:id', authUserDetails('employee'), updateJobAppliedStatus )
+router.patch('/employer/update-recruitment-posts/:id', authUserDetails('employer'), updateJobRecruitmentPosts )
 
 
 

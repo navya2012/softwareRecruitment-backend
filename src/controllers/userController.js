@@ -52,7 +52,13 @@ const userLoginDetails = async (req, res) => {
         //token
         const token = createToken({ _id: loginDetails._id, role: loginDetails.role });
 
-        res.status(200).json({ loginDetails, token });
+        res.status(200).json({ 
+            _id:loginDetails._id,
+            role:loginDetails.role,
+            email:loginDetails.email,
+            mobileNumber:loginDetails.mobileNumber,
+            token
+         });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
