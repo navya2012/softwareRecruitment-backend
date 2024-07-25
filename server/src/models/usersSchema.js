@@ -15,12 +15,12 @@ const AddressSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    zipCode: {
-        type: Number,
-        required: true
-    },
     country: {
         type: String,
+        required: true
+    },
+    zipCode: {
+        type: Number,
         required: true
     }
 });
@@ -34,7 +34,7 @@ const userDetailsSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+     
     },
     password: {
         type: String,
@@ -79,25 +79,37 @@ const userDetailsSchema = mongoose.Schema({
     },
     location:{
         type:String,
+    },
+    //
+    otp:{
+        type:String
+    },
+    isVerified:{
+        type:Boolean,
+        default:false
     }
 },
     { timestamp: true }
 )
 
+userDetailsSchema.index({ email: 1, role: 1 }, { unique: true });
+
+
 
 // users static signup function
-userDetailsSchema.statics.signup = async (role, email, password, mobileNumber,  companyName, companyType, address, firstName, lastName ) => {
+userDetailsSchema.statics.signup = async (role, email, password, mobileNumber,  companyName, companyType, address, firstName, lastName, otp) => {
 
     // checking user exists or not
-    const exists = await userDetailsModel.findOne({ email })
+    const exists = await userDetailsModel.findOne({ email, role })
     if (exists) {
-        throw Error("Email already exists!")
+        throw Error(`Email already exists for this ${role} role!`)
     }
 
+    //password
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
 
-    const userSignup = await userDetailsModel.create({role, email, mobileNumber, role, companyName, companyType, address, firstName, lastName, password: hash })
+    const userSignup = await userDetailsModel.create({role, email, mobileNumber, role, companyName, companyType, address, firstName, lastName, password: hash,otp, isVerified:false})
 
     return userSignup
 }

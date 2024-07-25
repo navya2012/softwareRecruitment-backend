@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const workingExperienceSchema = mongoose.Schema({
     technologies: {
-        type: String,
+        type: [String],
         enum: ['HTML','CSS','JAVASCRIPT','REACT','ANGULAR','VUE'],
         required: true,
         default:'VUE'
