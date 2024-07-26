@@ -12,7 +12,7 @@ const AuthCoverPage = () => {
       sx={{ backgroundColor: '#0557A2' }}
     >
       <img
-        src={require("../../../../Assets/signup.png")} // Replace with your image URL
+        src={require("../../Assets/signup.png")} // Replace with your image URL
         alt="cover"
         style={{ maxWidth: '100%', maxHeight: '100%', width:'500px' }}
       />

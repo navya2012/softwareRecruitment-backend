@@ -34,7 +34,7 @@ const userDetailsSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
-     
+        unique:true
     },
     password: {
         type: String,
@@ -92,8 +92,6 @@ const userDetailsSchema = mongoose.Schema({
     { timestamp: true }
 )
 
-userDetailsSchema.index({ email: 1, role: 1 }, { unique: true });
-
 
 
 // users static signup function
@@ -129,6 +127,7 @@ userDetailsSchema.statics.login = async  (email, password) => {
     }
     return userLogin;
 };
+
 
 const userDetailsModel = new mongoose.model("UserDetails", userDetailsSchema)
 

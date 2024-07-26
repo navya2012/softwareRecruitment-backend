@@ -8,7 +8,6 @@ const authUserDetails = (expectedRole) => {
     return async (req, res, next) => {
         //console.log('in middleware expected role', expectedRole)
 
-        // contains all the tokens
         const { authorization } = req.headers
         if (!authorization) {
             res.status(401).json({ error: "Auth token is required" })
@@ -18,12 +17,10 @@ const authUserDetails = (expectedRole) => {
         if (!token) {
             return res.status(401).json({ error: "Invalid token format" });
         }
-
         try {
 
             // checking token entered by user and generated at time of login is same or not 
             const { _id, role } = jwt.verify(token, process.env.JWT_TOKEN)
-            //console.log("token verification", _id, role)
             if (!_id || !role) {
                 return res.status(401).json({ error: "Invalid token" });
             }
@@ -51,7 +48,6 @@ const authUserDetails = (expectedRole) => {
 
 // email
 const authUser = async (req, res, next) => {
-    // contains all the tokens
     const { authorization } = req.headers
     if (!authorization) {
         res.status(401).json({ error: "Auth token is required" })
@@ -66,7 +62,6 @@ const authUser = async (req, res, next) => {
 
         // checking token entered by user and generated at time of login is same or not 
         const { _id, role, email } = jwt.verify(token, process.env.JWT_TOKEN)
-        //console.log("token verification", _id, role, email)
         if (!_id || !role || !email) {
             return res.status(401).json({ error: "Invalid token" });
         }
@@ -76,8 +71,7 @@ const authUser = async (req, res, next) => {
         if (!req.userDetails) {
             return res.status(401).json({ error: `${role} Id not found` });
         }
-        
-        //console.log(req.userDetails)
+
         //after checking move to next operations
         next()
     }

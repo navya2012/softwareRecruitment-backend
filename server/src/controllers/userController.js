@@ -78,7 +78,7 @@ const verifyOtp = async (req,res) => {
     try {
         const user = await userDetailsModel.findOne({ email });
         if (!user) {
-            return res.status(400).json({ error: "User not found!" });
+            return res.status(400).json({ error: "Email not found!" });
         }
 
         if (user.otp === otp) {
@@ -123,11 +123,11 @@ const userLoginDetails = async (req, res) => {
 };
 
 
-
-
 module.exports = {
     userSignupDetails,
     userLoginDetails,
     signupValidation,
-    verifyOtp
+    verifyOtp,
+    generateOtp,
+    transporter
 }

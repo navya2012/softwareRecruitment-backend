@@ -15,10 +15,11 @@ require('./db/connection')
 
 //require routes
 const userRoutes = require('./routes/userRoutes')
+const authRoutes = require("./routes/authRoutes")
 
 //routes 
+app.use('/api/auth', authRoutes )
 app.use('/api', userRoutes )
-
 
 app.get("/", (req,res) => {
     res.send('hello')
