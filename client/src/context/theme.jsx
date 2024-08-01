@@ -2,13 +2,30 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
+  MuiBox: {
+    styleOverrides: {
+      root: {
+        fontFamily: "'Montserrat', sans-serif",
+      },
+    }
+  },
   typography: {
     fontFamily: "'Montserrat', sans-serif",
-    h5: {
+    h4: {
       color: '#0557A2',
       fontWeight: 700,
-      lineHeight: '30px',
-      textAlign: 'center'
+      lineHeight: '30px'
+    },
+    welcomeHeader: {
+      fontWeight: 600,
+      textAlign: 'center',
+      marginBottom: '20px',
+    },
+    welcomeSubheader: {
+      marginBottom: '5px',
+      fontSize: '1.125rem',
+      textAlign: 'center',
+      color: '#0557A2'
     }
   },
   components: {
@@ -17,7 +34,7 @@ const theme = createTheme({
         contained: {
           backgroundColor: '#0557A2',
           borderRadius: '12px',
-          width: '100%',
+          minWidth: '100%',
           padding: '8px',
           height: '56px',
           fontWeight: 700,

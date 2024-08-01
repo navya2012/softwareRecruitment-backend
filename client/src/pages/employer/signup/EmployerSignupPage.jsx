@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import AuthCoverPage from '../../CoverPage/AuthCoverPage';
+import AuthCoverPage from '../../../common/authCoverPage/AuthCoverPage';
 import EmployerSignUpForm from './EmployerSignUpForm';
 
 const EmployerSignUpPage = () => {
@@ -12,8 +12,8 @@ const EmployerSignUpPage = () => {
       <Grid item xs={12} sm={6} display="flex" alignItems="start" justifyContent="center">
         <EmployerSignUpForm />
       </Grid>
-    </Grid>
+    </Grid>                                
   ); 
-};
+};                              
 
 export default EmployerSignUpPage;

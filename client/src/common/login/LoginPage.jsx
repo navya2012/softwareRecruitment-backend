@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid } from '@mui/material';
 import LoginForm from './LoginForm';
-import AuthCoverPage from '../CoverPage/AuthCoverPage';
+import AuthCoverPage from '../authCoverPage/AuthCoverPage';
 
 
 const LoginPage = () => {

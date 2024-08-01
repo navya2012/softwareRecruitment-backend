@@ -34,7 +34,7 @@ text-align: center;
 
 .link-text-style{
     color: #0F172A;
-font-size: 15px;
+font-size: 17px;
 font-weight: 400;
 line-height: 22.4px;
 text-align: center;
@@ -46,4 +46,33 @@ text-align: center;
 font-size: 16px;
 font-weight: 700;
 line-height: 22.4px;
+}
+
+@media(max-width:900px){
+    .form-page-styles{
+        padding: 40px;
+    }
+}
+
+/* //otp */
+.otp-field{
+  width: 56px;
+  height: 56px;
+  text-align: center;
+  border-radius: 150px;  
+  border: 10px solid #E2E8F0;
+}
+
+
+@media(max-width:750px){
+    .otp-field{
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/*  toast */
+.custom-toast{
+    font-size: 25px;
+    width: 350px
 }

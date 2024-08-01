@@ -64,7 +64,7 @@ const userSignupDetails = async (req, res) => {
          //token
          const token =  createToken({ _id: signUpDetails._id, role: signUpDetails.role, email: signUpDetails.email });
 
-        res.status(200).json({ message: 'Signup successful, OTP sent to email.' ,  token})
+        res.status(200).json({ message: 'Signup successful, OTP sent to email.' , signUpDetails,  token})
     } catch (err) {
         res.status(400).json({ error: err.message })
     }
@@ -112,9 +112,11 @@ const userLoginDetails = async (req, res) => {
 
         res.status(200).json({ 
             message: "Successfully Logged In",
-            _id:loginDetails._id,
-            role:loginDetails.role,
-            email:loginDetails.email,
+            loginUsers:{
+                _id:loginDetails._id,
+                role:loginDetails.role,
+                email:loginDetails.email,
+            },
             token
          });
     } catch (error) {

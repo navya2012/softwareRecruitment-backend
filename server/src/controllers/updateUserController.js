@@ -1,4 +1,5 @@
 const { userDetailsModel } = require("../models/usersSchema");
+const { validationResult } = require('express-validator');
 
 
 //update

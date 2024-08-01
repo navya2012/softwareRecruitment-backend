@@ -2,29 +2,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
-const AddressSchema = mongoose.Schema({
-    street: {
-        type: String,
-        required: true
-    },
-    city: {
-        type: String,
-        required: true
-    },
-    state: {
-        type: String,
-        required: true
-    },
-    country: {
-        type: String,
-        required: true
-    },
-    zipCode: {
-        type: Number,
-        required: true
-    }
-});
-
 const userDetailsSchema = mongoose.Schema({
     role:{
         type:String,
@@ -55,7 +32,21 @@ const userDetailsSchema = mongoose.Schema({
         type: String,
     },  
     address: {
-        type: AddressSchema,
+        street: {
+            type: String,
+        },
+        city: {
+            type: String,
+        },
+        state: {
+            type: String,
+        },
+        country: {
+            type: String,
+        },
+        zipCode: {
+            type: Number,
+        }
     },
     employeesCount:{
         type:Number
@@ -91,7 +82,6 @@ const userDetailsSchema = mongoose.Schema({
 },
     { timestamp: true }
 )
-
 
 
 // users static signup function

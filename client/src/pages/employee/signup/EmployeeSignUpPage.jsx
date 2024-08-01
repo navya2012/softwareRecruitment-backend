@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import AuthCoverPage from '../../CoverPage/AuthCoverPage';
+import AuthCoverPage from '../../../common/authCoverPage/AuthCoverPage';
 import EmployeeSignUpForm from './EmployeeSignUpForm';
 
 
@@ -12,7 +12,7 @@ const EmployeeSignUpPage = () => {
       </Grid>
       <Grid item xs={12} sm={6} display="flex" alignItems="start" justifyContent="center">
         <EmployeeSignUpForm />
-      </Grid>
+      </Grid>     
     </Grid>
   );
 };
