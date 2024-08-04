@@ -7,12 +7,18 @@ import ForgotPassword from './common/forgotPassword/ForgotPassword';
 import ResetPassword from './common/resetPassword/ResetPassword';
 import OTPVerification from './common/verifyOtp/OTPVerification';
 import LoginPage from './common/login/LoginPage';
-import Navbar from './components/Navbar/Navbar';
 import EmployerSignUpPage from './pages/employer/signup/EmployerSignupPage';
 import EmployeeSignUpPage from './pages/employee/signup/EmployeeSignUpPage';
 import WelcomePage from './components/welcomePage/WelcomePage';
 import EmployerDashboard from './pages/employer/dashboard/EmployerDashboard';
 import EmployeeDashboard from './pages/employee/dashboard/EmployeeDashboard';
+import Layout from './components/layout/Layout';
+import PrivatePath from './common/privatePath/PrivatePath';
+import ExperienceProvider from './context/ExperienceProvider';
+import JobPosts from './pages/employer/jobPosts/JobPosts';
+import JobPostsData from './pages/employee/jobPosts/JobPostsData';
+import JobAppliedApplications from './pages/employer/applications/JobAppliedApplications';
+
 
 
 function App() {
@@ -21,9 +27,10 @@ function App() {
     <>
       <AuthProvider>
         <ThemeProvider theme={theme}>
+          <ExperienceProvider>
           <BrowserRouter>
-          <Navbar/>
             <Routes>
+            <Route element={<Layout />}>
             <Route path='/' element={<WelcomePage />} />
               <Route path='/employer/signup' element={<EmployerSignUpPage />} />
               <Route path='/employee/signup' element={<EmployeeSignUpPage />} />
@@ -31,10 +38,15 @@ function App() {
               <Route path='/forgot-password' element={<ForgotPassword />} />
               <Route path='/reset-password' element={<ResetPassword />} />
               <Route path='/verify-otp' element={<OTPVerification />} />
-              <Route path='/employer/dashboard' element={<EmployerDashboard />} />
-              <Route path='/employee/dashboard' element={<EmployeeDashboard />} />
+              <Route path='/employer/dashboard' element={<PrivatePath><EmployerDashboard /></PrivatePath> } />
+              <Route path='/employee/dashboard' element={<PrivatePath><EmployeeDashboard /></PrivatePath>} />
+              <Route path='/employer/jobs' element={<PrivatePath><JobPosts /></PrivatePath>} />
+              <Route path='/employee/jobs' element={<PrivatePath><JobPostsData /></PrivatePath>} />
+              <Route path='/employer/applications' element={<PrivatePath><JobAppliedApplications /></PrivatePath>} />
+              </Route>
             </Routes>
           </BrowserRouter>
+          </ExperienceProvider>
         </ThemeProvider>
       </AuthProvider>
     </>

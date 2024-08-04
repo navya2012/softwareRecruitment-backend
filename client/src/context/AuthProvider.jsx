@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState } from 'react'
-import { clearError } from '../redux/slices/userSlices';
+import { clearError } from '../redux/slices/authSlice';
 import { useDispatch } from 'react-redux';
 
 
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
 
   const employerHandleChange = (e) => {
     const { name, value, type, checked } = e.target;
-  
+
     // Check if the field name is a nested field (e.g., address)
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
@@ -79,10 +79,75 @@ export const AuthProvider = ({ children }) => {
 
     dispatch(clearError());
   };
-  
+
+  //update form
+  const [updateEmployeeFormData, setUpdateEmployeeFormData] = useState({
+    email: '',
+    password: '',
+    mobileNumber: '',
+    firstName: '',
+    lastName: '',
+    position: '',
+    currentCompany: '',
+    location: '',
+  })
+
+  const handleChangeUpdateEmployeeFormData = (e) => {
+    const { name, value } = e.target
+
+    setUpdateEmployeeFormData({
+      ...updateEmployeeFormData,
+      [name]: value
+    })
+  }
+
+  const [updateEmployerFormData, setUpdateEmployerFormData] = useState({
+    email: '',
+    password: '',
+    mobileNumber: '',
+    companyName: '',
+    companyType: '',
+    address: {
+      street: '',
+      city: '',
+      state: '',
+      country: '',
+      zipCode: ''
+    },
+    employeesCount: '',
+    headQuarters: ''
+  })
+
+  const handleChangeUpdateEmployerFormData = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    // Check if the field name is a nested field (e.g., address)
+    if (name.includes('.')) {
+      const [parent, child] = name.split('.');
+      setUpdateEmployerFormData((prevData) => ({
+        ...prevData,
+        [parent]: {
+          ...prevData[parent],
+          [child]: type === 'checkbox' ? checked : value,
+        },
+      }));
+    } else {
+      setUpdateEmployerFormData((prevData) => ({
+        ...prevData,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    }
+
+    dispatch(clearError());
+  };
+
   return (
     <>
-      <AuthContext.Provider value={{ employeeFormData, setEmployeeFormData, employeeHandleChange, employerHandleChange, employerFormData, setEmployerFormData }}>
+      <AuthContext.Provider value={{
+        employeeFormData, setEmployeeFormData, employeeHandleChange, employerHandleChange, employerFormData, setEmployerFormData, updateEmployeeFormData, setUpdateEmployeeFormData,
+        handleChangeUpdateEmployeeFormData, updateEmployerFormData, setUpdateEmployerFormData, handleChangeUpdateEmployerFormData
+      }}
+      >
         {children}
       </AuthContext.Provider>
     </>

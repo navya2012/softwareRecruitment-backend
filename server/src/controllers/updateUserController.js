@@ -49,7 +49,7 @@ const updateUserDetails = async (req, res) => {
             throw new Error('Invalid role');
         }
 
-        res.status(200).json({ updatedUser });
+        res.status(200).json({ message:"Updated  Successfully", updatedUser });
     } catch (err) {
         res.status(400).json({ error: err.message });
     }

@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useDispatch } from 'react-redux';
-import { clearError } from '../../redux/slices/userSlices';
+import { clearError } from '../../redux/slices/authSlice';
 import { login } from '../../api\'s/authApi\'s';
 
 const LoginForm = () => {

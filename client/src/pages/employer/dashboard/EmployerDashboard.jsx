@@ -1,8 +1,11 @@
 import React from 'react'
+import EmployerProfile from '../profile/EmployerProfile'
 
 const EmployerDashboard = () => {
   return (
-    <div>EmployerDashboard</div>
+    <>
+    <EmployerProfile/>
+    </>
   )
 }
 

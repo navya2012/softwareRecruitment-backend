@@ -1,0 +1,9 @@
+
+/* profile */
+.profile-styles{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+}
+

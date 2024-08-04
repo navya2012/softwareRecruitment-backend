@@ -11,29 +11,26 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../redux/slices/userSlices';
+import { logout } from '../../redux/slices/authSlice'; 
 
 const pages = {
   employee: [
-    { name: 'Employee Home', path: '/employee/home' },
-    { name: 'Employee Profile', path: '/employee/profile' },
-    { name: 'Employee Jobs', path: '/employee/jobs' },
-    { name: 'Employee Applications', path: '/employee/applications' },
+    { name: ' Home', path: '/employee/dashboard' },
+    { name: ' Jobs', path: '/employee/jobs' },
   ],
   employer: [
-    { name: 'Employer Home', path: '/employer/home' },
-    { name: 'Employer Profile', path: '/employer/profile' },
-    { name: 'Employer Jobs', path: '/employer/jobs' },
-    { name: 'Employer Applications', path: '/employer/applications' },
+    { name: ' Home', path: '/employer/dashboard' },
+    { name: ' Jobs', path: '/employer/jobs' },
+    { name: ' Applications', path: '/employer/applications' },
   ],
 };
 
-function ResponsiveAppBar() {
+const Navbar = ()  => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const loginData = useSelector(state => state.userReducer.loginData);
+  const loginData = useSelector(state => state.authReducer.userData);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -64,7 +61,7 @@ function ResponsiveAppBar() {
   const userPages = loginData.role === 'employee' ? pages.employee : pages.employer;
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -114,7 +111,7 @@ function ResponsiveAppBar() {
                 <Box>
                   {userPages.map((page) => (
                     <MenuItem key={page.path} onClick={() => handleNavigation(page.path)}>
-                      <Typography textAlign="center">{page.name}</Typography>
+                      <Typography variant='body2' textAlign="center">{page.name}</Typography>
                     </MenuItem>
                   ))}
                   <MenuItem onClick={handleLogout}>
@@ -200,4 +197,4 @@ function ResponsiveAppBar() {
   );
 }
 
-export default ResponsiveAppBar;
+export default Navbar;

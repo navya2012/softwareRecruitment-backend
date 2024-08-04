@@ -1,24 +1,25 @@
 import React, { useState } from 'react'
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, styled, TextField, Typography } from '@mui/material';
 import '../../CSSModules/formStyles/formPageStyles.css'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AuthCoverPage from '../authCoverPage/AuthCoverPage';
-import { setLoading } from '../../redux/slices/userSlices';
+import { setLoading } from '../../redux/slices/authSlice';
 import { verifyOtp } from '../../api\'s/authApi\'s';
 
-const timerStyle = {
+const TimerStyle = styled(Typography)(({ theme }) => ({
     color: "#0557A2",
     fontSize: "16px",
     fontWeight: "700",
-    padding:'30px 0'
-}
+    padding: '30px 0'
+
+}));
 
 const OTPVerification = () => {
     const navigate = useNavigate()
 
     const [otp, setOtp] = useState(Array(6).fill(''));
-    const [timer,setTimer] = useState(60)
+    const [timer, setTimer] = useState(60)
     const [isResendDisabled, setIsResendDisabled] = useState(false);
 
     // Function to format time in mm:ss
@@ -45,23 +46,23 @@ const OTPVerification = () => {
                 }
                 return prev - 1;
             });
-        }, 1000);   
+        }, 1000);
         return () => clearInterval(intervalId);
-    },[timer])
+    }, [timer])
 
     const handleOtpChange = (e, index) => {
         const newOtp = [...otp];
         newOtp[index] = e.target.value;
-   
+
         // Move focus to the next input
         if (e.target.value && index < 5) {
-          document.getElementById(`otp-input-${index + 1}`).focus();
+            document.getElementById(`otp-input-${index + 1}`).focus();
         }
 
-        setOtp(newOtp); 
-      };
+        setOtp(newOtp);
+    };
 
-      const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (timer === 0) {
             toast.error("OTP has expired. Please Resend Code ", {
@@ -70,17 +71,17 @@ const OTPVerification = () => {
             });
             return;
         }
-        const otpString = otp.join('');      
-        setLoading(true); 
+        const otpString = otp.join('');
+        setLoading(true);
         try {
             const response = await verifyOtp(otpString, navigate);
-        if (response.success) {
-            setOtp(Array(6).fill(''));
-        }
+            if (response.success) {
+                setOtp(Array(6).fill(''));
+            }
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
-      };
+    };
 
     //   const handleResendCode = async (e) => {
     //     setIsResendDisabled(true);
@@ -102,52 +103,51 @@ const OTPVerification = () => {
     //     }
 
     //   }
-  return (
-    <>
-       <Grid container height="100vh">
+    return (
+        <>
+            <Grid container height="100vh">
                 <Grid item xs={12} sm={6}>
                     <AuthCoverPage />
                 </Grid>
                 <Grid item xs={12} sm={6} display="flex" alignItems="center" justifyContent="center" >
                     <Box className='form-page-styles' >
-                        <Typography variant="h4" sx={{ paddingBottom: '15px'}} >
+                        <Typography variant="h4" sx={{ paddingBottom: '15px' }} >
                             Verify your email address
                         </Typography>
                         <Box component='form' onSubmit={handleSubmit} >
                             <Typography variant="body2" sx={{ paddingBottom: '20px', color: '#7D8FB3' }} >
-                            Please enter 6-digit code that has sent to your email:
+                                Please enter 6-digit code that has sent to your email:
                             </Typography>
                             <Box display="flex" gap={1} >
-                            {otp.map((value, index) => (
-                                <TextField
-                                    key={index}
-                                    id={`otp-input-${index}`}
-                                    variant="outlined"
-                                    value={value}
-                                     onChange={(e) => handleOtpChange(e, index)}
-                                    inputProps={{ maxLength: 1 }}
-                                     className='otp-field'               
-                                />
-                            ))}
-                        </Box>
-                        <Box display='flex' alignItems="center" justifyContent="space-between" flexWrap="wrap" >
-                        <Typography variant="body2" style={timerStyle}>
-                        {formatTime(timer)}
-                            </Typography>
-                            <Typography variant="body2"   
-                            style={{ ...timerStyle, cursor: 'pointer', color: isResendDisabled ? '#7D8FB3' : '#0557A2' }} 
-                            // onClick={!isResendDisabled ? handleResendCode : null}
-                            >
-                            Resend Otp  
-                            </Typography>
-                        </Box>
+                                {otp.map((value, index) => (
+                                    <TextField
+                                        key={index}
+                                        id={`otp-input-${index}`}
+                                        variant="outlined"
+                                        value={value}
+                                        onChange={(e) => handleOtpChange(e, index)}
+                                        inputProps={{ maxLength: 1 }}
+                                        className='otp-field'
+                                    />
+                                ))}
+                            </Box>
+                            <Box display='flex' alignItems="center" justifyContent="space-between" flexWrap="wrap" >
+                                <TimerStyle variant="body2">
+                                    {formatTime(timer)}
+                                </TimerStyle>
+                                <TimerStyle variant="body2"
+
+                                >
+                                    Resend Otp
+                                </TimerStyle>
+                            </Box>
                             <Button type="submit" variant="contained">Submit</Button>
                         </Box>
                     </Box>
                 </Grid>
             </Grid>
-    </>
-  )
+        </>
+    )
 }
 
 export default OTPVerification

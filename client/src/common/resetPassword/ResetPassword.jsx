@@ -3,7 +3,7 @@ import { Box, Button, Grid, TextField, Typography, InputAdornment, IconButton } 
 import AuthCoverPage from '../authCoverPage/AuthCoverPage';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { setLoading } from '../../redux/slices/userSlices';
+import { setLoading } from '../../redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { resetPassword } from '../../api\'s/authApi\'s';
 

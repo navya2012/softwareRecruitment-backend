@@ -16,6 +16,15 @@ const theme = createTheme({
       fontWeight: 700,
       lineHeight: '30px'
     },
+    h5: {
+      color: '#0557A2',
+      fontWeight: 700,
+      lineHeight: '30px'
+    },
+    body1: {
+      fontWeight: 400,
+      fontSize:'18px'
+    },
     welcomeHeader: {
       fontWeight: 600,
       textAlign: 'center',
@@ -33,13 +42,14 @@ const theme = createTheme({
       styleOverrides: {
         contained: {
           backgroundColor: '#0557A2',
-          borderRadius: '12px',
-          minWidth: '100%',
-          padding: '8px',
-          height: '56px',
+          borderRadius: '45px',
+          color:'white',
+          fontSize: '1.25rem',
+          height: '55px',
           fontWeight: 700,
-          fontSize: '16px'
-        },
+          margin: '20px 0',
+          width:'100%'
+        }
       }
     }
   }

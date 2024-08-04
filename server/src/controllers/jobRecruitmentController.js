@@ -40,8 +40,8 @@ const updateJobAppliedStatus = async (req, res) => {
         res.status(200).json({
             _id: jobId,
             jobAppliedStatus: updatedJobPosts.jobAppliedStatus,
-            employee_id: updatedJobPosts.employee_id
-
+            employee_id: updatedJobPosts.employee_id,
+            message:'Applied for this Job'
         });
 
     }
@@ -62,7 +62,20 @@ const createJobRecruitmentPosts = async (req, res) => {
         const newJobPostData = new jobRecruitmentModel(createPostFields)
         await newJobPostData.save()
 
-        res.status(201).json({ newJobPostData })
+        res.status(201).json({message:"Posted Successfully", newJobPostData })
+    }
+    catch (err) {
+        res.status(400).json({ error: err.message })
+    }
+}
+
+//get recruitment posts - employer
+const getJobPosts = async (req, res) => {
+    const employer_id = req.user._id
+    try {
+
+        const getJobPostsList =  await jobRecruitmentModel.find({employer_id})
+        res.status(200).json({getJobPostsList })
     }
     catch (err) {
         res.status(400).json({ error: err.message })
@@ -90,16 +103,45 @@ const updateJobRecruitmentPosts = async (req, res) => {
             return res.status(404).json({ error: "Job post not found" });
         }
 
-        res.status(200).json({ updatedRecruitmentPosts });
+        res.status(200).json({ message:"Updated Job Post Successfully", updatedRecruitmentPosts });
 
     }
     catch (err) {
         res.status(400).json({ error: err.message })
     }
 }
+
+//delete
+const deleteJobPosts = async (req, res) => {
+    const employer_id = req.user._id;
+    const jobId = req.params.id;
+
+    try {
+        // Find and delete the job post that matches both employer_id and jobId
+        const result = await jobRecruitmentModel.findOneAndDelete({
+            _id: jobId,
+            employer_id: employer_id
+        });
+
+        // Check if a document was found and deleted
+        if (!result) {
+            return res.status(404).json({ message: "Job post not found" });
+        }
+
+        res.status(200).json({ message: "Job post successfully deleted."});
+    }
+    catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+}
+
+
+
 module.exports = {
     getJobRecruitmentPosts,
     createJobRecruitmentPosts,
     updateJobAppliedStatus,
-    updateJobRecruitmentPosts
+    updateJobRecruitmentPosts,
+    getJobPosts,
+    deleteJobPosts
 }

@@ -1,8 +1,14 @@
 import React from 'react'
+import EmployeeProfile from '../profile/EmployeeProfile'
+import WorkingExperience from '../workingExperience/WorkingExperience'
+
 
 const EmployeeDashboard = () => {
   return (
-    <div>EmployeeDashboard</div>
+    <>
+    <EmployeeProfile/>
+    <WorkingExperience/>
+    </>
   )
 }
 

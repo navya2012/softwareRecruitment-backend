@@ -27,7 +27,7 @@ const workingExperienceSchema = mongoose.Schema({
         default:'BSC',
     },
     language: {
-        type: String,
+        type: [String],
         enum: ['Telugu','Hindi','English','Tamil'],
         required: true,
         default:'Tamil'

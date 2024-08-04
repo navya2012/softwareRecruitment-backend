@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography, Container, RadioGroup, FormControlLabel, Radio, Grid, useTheme } from '@mui/material';
 import { styled } from '@mui/system';
 import AuthCoverPage from '../../common/authCoverPage/AuthCoverPage';
@@ -6,10 +6,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import '../../CSSModules/formStyles/formPageStyles.css'
 
+
 // Styled components
 const WelcomeContainer = styled(Box)(({ theme }) => ({
-  // border: '1px solid #E7E8EA',
-  // borderRadius: '15px',
   display: 'flex',
   justifyContent: 'center',
   alignContent: 'center',
@@ -21,8 +20,7 @@ const WelcomeContainer = styled(Box)(({ theme }) => ({
 }));
 
 const RightSideForm = styled(Box)(({ theme }) => ({
-  width: '57%',
-  borderRadius: '0 15px 15px 0',
+   width: '57%',
   margin: '2rem',
   [theme.breakpoints.down('sm')]: {
     width: '100%',
@@ -32,13 +30,6 @@ const RightSideForm = styled(Box)(({ theme }) => ({
 }));
 
 const StyledButton = styled(Button)(({ theme, disabled }) => ({
-  background: '#0557A2',
-  borderRadius: '45px',
-  color: 'white',
-  fontSize: '1.25rem',
-  height: '55px',
-  fontWeight: 700,
-  margin: '20px 0',
   cursor: disabled ? 'not-allowed' : 'pointer',
   '&:disabled': {
     background: '#E7E8EA',
@@ -47,11 +38,12 @@ const StyledButton = styled(Button)(({ theme, disabled }) => ({
   },
 }));
 
-function WelcomePage() {
-  const [customer, setCustomer] = React.useState('');
+const WelcomePage = () => {
+  const [customer, setCustomer] = useState('');
 
   const theme = useTheme()
   const navigate = useNavigate()
+
 
   const handleRadioChange = (event) => {
     setCustomer(event.target.value);
@@ -80,7 +72,7 @@ function WelcomePage() {
             <RightSideForm>
               <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                 <Typography variant="h3" sx={theme.typography.welcomeHeader}>
-                  Welcome to <span style={{ color: '#364BC6' }}>INKPROG</span>
+                  Welcome to <span style={{ color: '#364BC6', }}>INKPROG</span>
                 </Typography>
                 <Typography variant="h6" component="h6" sx={theme.typography.welcomeSubheader}>
                   Sign Up as a  . . .

@@ -1,32 +1,19 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { loginFailure, loginSuccess, setLoading, signUpEmployeeSuccess, signUpEmployerSuccess, signUpFailure } from '../redux/slices/userSlices'
+import {  loginSuccess, setLoading, setUserRole } from '../redux/slices/authSlice'
 import '../CSSModules/formStyles/formPageStyles.css'
 
-const BASE_URL = "http://localhost:5000/api"
+const BASE_URL = "http://localhost:5000/api/auth"
 
 //sign up
 export const signUp = (formData, navigate) => async (dispatch) => {
     dispatch(setLoading(true));
     try {
-        const response = await axios.post(`${BASE_URL}/auth/signup`, formData)
+        const response = await axios.post(`${BASE_URL}/signup`, formData)
         if (response && response.data.token &&  response.status === 200) {
-            const { token, signUpDetails } = response.data;
-            //const userIdentifier = signUpDetails.email; 
+            const { token,signUpDetails } = response.data; 
             localStorage.setItem(`signUpToken`, token);
-            // Store user details
-            const userDetails = {
-                role: signUpDetails.role,
-                email: signUpDetails.email
-            };
-            localStorage.setItem(`userDetails`, JSON.stringify(userDetails));
-
-            if (formData.role === 'employee') {
-                dispatch(signUpEmployeeSuccess({ userDetails: signUpDetails }));
-              } else if (formData.role === 'employer') {
-                dispatch(signUpEmployerSuccess({ userDetails: signUpDetails }));
-              }   
-              
+            localStorage.setItem('SignUpDetails', JSON.stringify(signUpDetails)); 
             toast.success(response.data.message, {
                 position: "top-center",
                 autoClose: 3000 ,
@@ -49,11 +36,10 @@ export const signUp = (formData, navigate) => async (dispatch) => {
             } else {
                 errorMessages = ['An unknown error occurred'];
             }
-        } else {
-            // Handle cases where error.response is undefined
+        } 
+        else {
             errorMessages = ['A network error occurred. Please try again later.'];
         }
-        dispatch(signUpFailure(errorMessages));
         errorMessages && errorMessages.forEach(message => {
             toast.error(message, {
                 position: "top-center",
@@ -75,7 +61,7 @@ export const signUp = (formData, navigate) => async (dispatch) => {
 export const verifyOtp =  async ( otp, navigate) => {
     try{
         const token = localStorage.getItem('signUpToken');
-        const response = await axios.post(`${BASE_URL}/auth/verify-otp`, 
+        const response = await axios.post(`${BASE_URL}/verify-otp`, 
             {
                 "otp" : otp
             },
@@ -116,18 +102,19 @@ export const verifyOtp =  async ( otp, navigate) => {
 export const login =  ( formData, navigate) => async (dispatch) => {
     dispatch(setLoading(true))
     try{
-        const response = await axios.post(`${BASE_URL}/auth/login`,formData)
+        const response = await axios.post(`${BASE_URL}/login`, formData)
         if (response &&  response.status === 200) {
-            const { token, loginUsers } = response.data;
+            const { token, loginDetails } = response.data;
             localStorage.setItem('loginToken', token);
-            localStorage.setItem('loginUsers', JSON.stringify(loginUsers));
+            dispatch(setUserRole(loginDetails.role))
+            dispatch(loginSuccess({loginDetails}));
 
-            dispatch(loginSuccess({loginUsers}));
-
-            if (loginUsers.role === 'employee') {
+            if (loginDetails.role === 'employee') {
                 navigate('/employee/dashboard');
-            } else if (loginUsers.role === 'employer') {
+                localStorage.setItem('employeeId', JSON.stringify(loginDetails._id));
+            } else if (loginDetails.role === 'employer') {
                 navigate('/employer/dashboard');
+                localStorage.setItem('employerId', JSON.stringify(loginDetails._id));
             }
             toast.success(response.data.message, {
                 position: "top-center",
@@ -141,8 +128,6 @@ export const login =  ( formData, navigate) => async (dispatch) => {
         }
     }
     catch (error) {
-        console.log("login error", error);
-    
         let errorMessages = [];
         if (error.response && error.response.data && error.response.data.error) {
             if (Array.isArray(error.response.data.error)) {
@@ -156,8 +141,6 @@ export const login =  ( formData, navigate) => async (dispatch) => {
             // Handle cases where error.response is undefined
             errorMessages = ['A network error occurred. Please try again later.'];
         }
-    
-        dispatch(loginFailure(errorMessages));
         errorMessages.forEach(message => {
             toast.error(message, {
                 position: "top-center",
@@ -180,7 +163,7 @@ export const login =  ( formData, navigate) => async (dispatch) => {
 export const forgotPassword =  async( email, navigate) => {
     try{
         const token = localStorage.getItem('signUpToken');
-        const response = await axios.post(`${BASE_URL}/auth/forgot-password`,
+        const response = await axios.post(`${BASE_URL}/forgot-password`,
             {
                 "email":email
             },
@@ -223,7 +206,7 @@ export const resetPassword =async  (  oldPassword, newPassword, navigate)  => {
     console.log(oldPassword, newPassword)
     try{
         const token = localStorage.getItem('signUpToken');
-        const response = await axios.post(`${BASE_URL}/auth/reset-password`,
+        const response = await axios.post(`${BASE_URL}/reset-password`,
             {
                 "oldPassword":oldPassword,
                 "newPassword":newPassword

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import AuthCoverPage from '../authCoverPage/AuthCoverPage';
 import { useNavigate } from 'react-router-dom';
-import { setLoading } from '../../redux/slices/userSlices';
+import { setLoading } from '../../redux/slices/authSlice';
 import { forgotPassword } from '../../api\'s/authApi\'s';
 
 
