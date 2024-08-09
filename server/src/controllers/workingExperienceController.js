@@ -1,5 +1,24 @@
 const { workingExperienceModel } = require("../models/workingExperienceSchema");
 
+//get working experience
+const getWorkingExperience = async (req,res) => {
+    const employee_id = req.user._id
+    console.log('wdqda',employee_id)
+    try{
+        const experienceData = await workingExperienceModel.findOne({ employee_id });
+
+        if (!experienceData) {
+          return res.status(404).json({ error: 'Experience data not found' });
+        }
+    
+        res.status(200).json({ experienceData });
+    }
+    catch(err){
+        res.status(400).json({ error: err.message });
+    }
+
+}
+
 const workingExperienceController = async (req, res) => {
     const { technologies, experience, location, graduate, language, noticePeriod } = req.body;
     const employee_id = req.user._id;  // Get employee ID from authenticated user
@@ -34,5 +53,6 @@ const workingExperienceController = async (req, res) => {
 };
 
 module.exports = {
-    workingExperienceController
+    workingExperienceController,
+    getWorkingExperience
 };

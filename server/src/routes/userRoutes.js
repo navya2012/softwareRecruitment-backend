@@ -4,8 +4,8 @@ const express = require("express")
 const router = express.Router()
 
 const { signupValidation } = require("../controllers/userController")
-const { workingExperienceController } = require("../controllers/workingExperienceController")
-const { createJobRecruitmentPosts, updateJobRecruitmentPosts, getJobRecruitmentPosts, updateJobAppliedStatus, getJobPosts, deleteJobPosts } = require("../controllers/jobRecruitmentController")
+const { workingExperienceController, getWorkingExperience } = require("../controllers/workingExperienceController")
+const { createJobRecruitmentPosts, updateJobRecruitmentPosts, getJobRecruitmentPosts, updateJobAppliedStatus, getJobPosts, deleteJobPosts, getJobAppliedPosts } = require("../controllers/jobRecruitmentController")
 const updateUserDetails = require("../controllers/updateUserController")
 const { authUserDetails} = require("../middleware/authUserMiddleware")
       
@@ -16,12 +16,14 @@ router.patch('/employer/update-details', authUserDetails('employer'), signupVali
 
 //working experience
 router.post('/employee/working-experience', authUserDetails('employee'), workingExperienceController);
+router.get('/employee/working-experience', authUserDetails('employee'), getWorkingExperience)
 
 // job posts
 router.post('/employer/create-recruitment-posts', authUserDetails('employer'), createJobRecruitmentPosts);
 router.patch('/employer/update-recruitment-posts/:id', authUserDetails('employer'), updateJobRecruitmentPosts )
 router.get('/employer/get-recruitment-posts', authUserDetails('employer'), getJobPosts )
 router.delete('/employer/delete-recruitment-posts/:id', authUserDetails('employer'), deleteJobPosts )
+router.get('/employer/applied-job-posts', authUserDetails('employer'), getJobAppliedPosts)
 
 
 router.get('/employee/get-recruitment-posts',  getJobRecruitmentPosts);

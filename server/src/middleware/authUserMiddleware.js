@@ -31,7 +31,7 @@ const authUserDetails = (expectedRole) => {
 
 
             //checking id is present in db or not- only checking id     
-            req.user = await userDetailsModel.findById(_id).select("_id role");
+            req.user = await userDetailsModel.findById(_id);
             if (!req.user) {
                 return res.status(401).json({ error: `${expectedRole} Id not found` });
             }
@@ -67,7 +67,7 @@ const authUser = async (req, res, next) => {
         }
 
         //checking id is present in db or not- only checking id     
-        req.userDetails = await userDetailsModel.findById(_id).select("_id role email");
+        req.userDetails = await userDetailsModel.findById(_id);
         if (!req.userDetails) {
             return res.status(401).json({ error: `${role} Id not found` });
         }

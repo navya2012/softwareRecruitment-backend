@@ -1,17 +1,26 @@
 import { Box, Paper, Typography, Grid, Modal } from '@mui/material';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import ExperienceUpdateForm from './ExperienceUpdateForm';
 import ExperienceForm from './ExperienceForm';
 import { useExperienceContextData } from '../../../context/ExperienceProvider';
+import { getWorkingExperience } from '../../../api\'s/employeeApi\'s';
 
-const WorkingExperience = () => {
-  const { setUpdateExperienceData } = useExperienceContextData();
-  const { experienceData } = useSelector((state) => state.employeeReducer);
+const WorkingExperience = () => {  
   const [open, setOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  const { setUpdateExperienceData } = useExperienceContextData();
+
+  const { experienceData } = useSelector((state) => state.employeeReducer);
+console.log(experienceData)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+      dispatch(getWorkingExperience())
+  },[dispatch])
 
   const handleAddData = () => {
     setIsEditing(false);
@@ -53,9 +62,9 @@ const WorkingExperience = () => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Typography variant="h6">
-                {Array.isArray(experienceData.technologies) && experienceData.technologies.length > 0
-                  ? experienceData.technologies.join(', ')
-                  : ''}
+              {Array.isArray(experienceData.technologies) && experienceData.technologies.length > 0
+                    ? experienceData.technologies.join(', ')
+                    : ''}
               </Typography>
 
             </Grid>
@@ -73,7 +82,7 @@ const WorkingExperience = () => {
               </Typography>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Typography variant="h6">{experienceData.graduation}</Typography>
+              <Typography variant="h6">{experienceData.graduate}</Typography>
             </Grid>
             <Grid item xs={12} md={6}>
               <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
@@ -90,8 +99,8 @@ const WorkingExperience = () => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Typography variant="h6">
-                {Array.isArray(experienceData.languages) && experienceData.languages.length > 0
-                  ? experienceData.languages.join(', ')
+                {Array.isArray(experienceData.language) && experienceData.language.length > 0
+                  ? experienceData.language.join(', ')
                   : ''}
               </Typography>
 

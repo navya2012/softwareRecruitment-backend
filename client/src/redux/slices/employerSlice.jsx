@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     loading: false,
     jobPosts: [],
-    error: null
+    error: null,
+    jobAppliedUsers:[]
 }
 
 const employerSlice = createSlice({
@@ -40,7 +41,16 @@ const employerSlice = createSlice({
         setDeleteJobPosts: (state, action) => {
             return {
                 ...state,
-                jobPosts: state.jobPosts.filter(job => job._id !== action.payload)
+                jobPosts: state.jobPosts.filter(job => job._id !== action.payload),
+                error:null
+            }
+        },
+        setJobAppliedUsers :(state, action) => {
+            console.log('Updating jobAppliedUsers:', action.payload);
+            return{
+                ...state,
+                jobAppliedUsers: action.payload,
+                error:null
             }
         },
         clearError: (state) => {
@@ -56,6 +66,7 @@ export const {
     setDeleteJobPosts,
     addJobPost,
     setUpdateJobPost,
+    setJobAppliedUsers,
     clearError
 }
 

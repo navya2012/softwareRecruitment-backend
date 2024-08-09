@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { getAllJobPostsData, jobAppliedStatus } from '../../../api\'s/employeeApi\'s'
+import React, { useEffect } from 'react'
+import { getAllJobPostsData,  UpdateJobAppliedStatus } from '../../../api\'s/employeeApi\'s'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Button, Card, CardContent, Grid, Modal, Paper, styled, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Grid, Paper, styled, Typography } from '@mui/material'
 
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -14,8 +14,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const JobPostsData = () => {
   const { allJobPosts } = useSelector((state) => state.employeeReducer)
-  console.log(allJobPosts)
-  const [jobStatus, setJobStatus] = useState({})
+  const { userData } = useSelector((state) => state.authReducer)
 
   const dispatch = useDispatch()
 
@@ -25,21 +24,13 @@ const JobPostsData = () => {
 
   const handleJobApply = async (jobId) => {
     try {
-      const response = await dispatch(jobAppliedStatus(jobId))
-      if (response.success) {
-        // Update the status for the applied job
-        setJobStatus(prevStatus => ({
-          ...prevStatus,
-          [jobId]: 'Applied'
-        }))
-      }
+      await dispatch(UpdateJobAppliedStatus(jobId, userData))
     }
 
     catch (error) {
       console.log(error)
     }
   }
-  console.log(jobStatus)
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -97,9 +88,9 @@ const JobPostsData = () => {
                         <Grid item xs={12} sm={12}>
                           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <StyledButton type="submit" onClick={() => handleJobApply(job._id)} variant="contained"
-                              disabled={job.jobAppliedStatus === 'Applied'}
+                              disabled={job.jobAppliedStatus.status === 'Applied'}
                               >
-                                  {job.jobAppliedStatus === 'Applied' ? 'Applied' : 'Apply'}
+                                  {job.jobAppliedStatus.status === 'Applied' ? 'Applied' : 'Apply'}
                             </StyledButton>
                           </Box>
                         </Grid>

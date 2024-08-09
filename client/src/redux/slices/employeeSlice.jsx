@@ -17,6 +17,13 @@ const employeeSlice = createSlice({
                 loading: action.payload,
             }
         },
+        setAllExperienceData: (state, action) => {
+            return {
+                ...state,
+                experienceData: action.payload,
+                error: null
+            }
+        },
         setExperienceSuccess: (state, action) => {
             return {
                 ...state,
@@ -33,13 +40,18 @@ const employeeSlice = createSlice({
         },
         updateJobPostStatus: (state, action) => {
             const { jobId, status } = action.payload;
-            return {
-                ...state,
-                allJobPosts: state.allJobPosts.map(job =>
-                    job._id === jobId ? { ...job, jobAppliedStatus: status } : job
-                ),
-                error: null
-            };
+            state.allJobPosts = state.allJobPosts.map(job =>
+                job._id === jobId ? 
+                {
+                    ...job,
+                    jobAppliedStatus: {
+                        ...job.jobAppliedStatus,
+                        status: status, 
+                    }
+                } 
+                : job
+            );
+            state.error = null;
         },
         clearError: (state) => {
             state.error = null;
@@ -52,7 +64,7 @@ export const {
     setLoading,
     setAllJobPosts,
     updateJobPostStatus,
-    setExperienceFailure,
+    setAllExperienceData,
     setExperienceSuccess,
     clearError
 }

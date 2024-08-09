@@ -20,9 +20,9 @@ const ExperienceUpdateForm = ({handleClose, setOpen}) => {
           setUpdateExperienceData({
             technologies:[],
         experience:'',
-        graduation:'',
+        graduate:'',
         location:'',
-        languages:[],
+        language:[],
         noticePeriod:''
           });
         }
@@ -49,7 +49,7 @@ const ExperienceUpdateForm = ({handleClose, setOpen}) => {
                                     labelId="technology-select-label"
                                     id="technology-select"
                                     name="technologies"
-                                    value={updateExperienceData.technologies}
+                                    value={updateExperienceData.technologies || []}
                                     onChange={handleChangeUpdateExperienceData}
                                     label="Technology"
                                     multiple
@@ -68,7 +68,7 @@ const ExperienceUpdateForm = ({handleClose, setOpen}) => {
                                     labelId="experience-select-label"
                                     id="experience-select"
                                     name="experience"
-                                    value={updateExperienceData.experience}
+                                    value={updateExperienceData.experience || ''}
                                     onChange={handleChangeUpdateExperienceData}
                                     label="Experience"
                                 >
@@ -86,7 +86,7 @@ const ExperienceUpdateForm = ({handleClose, setOpen}) => {
                                     labelId="graduation-select-label"
                                     id="graduation-select"
                                     name="graduation"
-                                    value={updateExperienceData.graduation}
+                                    value={updateExperienceData.graduate || ''}
                                     onChange={handleChangeUpdateExperienceData}
                                     label="Graduation"
                                 >
@@ -104,7 +104,7 @@ const ExperienceUpdateForm = ({handleClose, setOpen}) => {
                                     labelId="location-select-label"
                                     id="location-select"
                                     name="location"
-                                    value={updateExperienceData.location}
+                                    value={updateExperienceData.location || ''}
                                     onChange={handleChangeUpdateExperienceData}
                                     label="Location"
                                 >
@@ -122,7 +122,7 @@ const ExperienceUpdateForm = ({handleClose, setOpen}) => {
                                     labelId="language-select-label"
                                     id="language-select"
                                     name="languages"
-                                    value={updateExperienceData.languages}
+                                    value={updateExperienceData.language || []}
                                     onChange={handleChangeUpdateExperienceData}
                                     label="Languages"
                                     multiple
@@ -141,7 +141,7 @@ const ExperienceUpdateForm = ({handleClose, setOpen}) => {
                                     labelId="notice-period-select-label"
                                     id="notice-period-select"
                                     name="noticePeriod"
-                                    value={updateExperienceData.noticePeriod}
+                                    value={updateExperienceData.noticePeriod || ''}
                                     onChange={handleChangeUpdateExperienceData}
                                     label="Notice Period"
                                 >

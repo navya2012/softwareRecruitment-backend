@@ -80,7 +80,7 @@ const userDetailsSchema = mongoose.Schema({
         default:false
     }
 },
-    { timestamp: true }
+    
 )
 
 

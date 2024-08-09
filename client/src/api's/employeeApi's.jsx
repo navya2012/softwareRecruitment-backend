@@ -2,7 +2,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import '../CSSModules/formStyles/formPageStyles.css'
 import { loginSuccess, setLoading} from '../redux/slices/authSlice'
-import { setAllJobPosts, setExperienceSuccess, updateJobPostStatus } from '../redux/slices/employeeSlice'
+import { setAllExperienceData, setAllJobPosts, setExperienceSuccess, updateJobPostStatus } from '../redux/slices/employeeSlice'
 
 
 
@@ -69,6 +69,51 @@ export const updateEmployeeDetails = (formData) => async (dispatch) => {
     }
 }
 
+export const getWorkingExperience = () => async (dispatch) => {
+    dispatch(setLoading(true));
+    try {
+        const token = localStorage.getItem('loginToken');
+        const response = await axios.get(`${BASE_URL}/employee/working-experience`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
+        if (response && response.data && response.status === 200) {   
+            console.log(response)        
+            dispatch(setAllExperienceData(response.data.experienceData))
+            return {
+                success: true,
+                data: response.data
+            };
+        }
+    }
+    catch (error) {
+        let errorMessage = '';
+        if (error.response && error.response.data && error.response.data.error) {
+            errorMessage = error.response.data.error;
+        } else if (error.message) {
+            errorMessage = error.message;
+        } else {
+            errorMessage = 'An unknown error occurred';
+        }
+        toast.error(errorMessage, {
+            position: "top-center",
+            autoClose: 3000,
+            className: 'custom-toast'
+        });
+        return {
+            success: false,
+            errors: errorMessage
+        };
+    }
+    finally {
+        dispatch(setLoading(false));
+    }
+
+}
+
 //working experience
 export const workingExperience = (experienceData) => async (dispatch) => {
     dispatch(setLoading(true));
@@ -113,7 +158,6 @@ export const getAllJobPostsData = () => async (dispatch) => {
     dispatch(setLoading(true));
     try {
         const response = await axios.get(`${BASE_URL}/employee/get-recruitment-posts`)
-        console.log(response)
         if (response && response.data && response.status === 200) {
             const result = response.data.getJobPostsData
             dispatch(setAllJobPosts(result))
@@ -150,15 +194,23 @@ export const getAllJobPostsData = () => async (dispatch) => {
 
 
 //get job applied status
-export const jobAppliedStatus = (jobId) => async (dispatch) => {
+export const UpdateJobAppliedStatus = (jobId, employeeDetails) => async (dispatch) => {
      dispatch(setLoading(true));
     try {
         const token = localStorage.getItem('loginToken');
-        const employeeId = JSON.parse(localStorage.getItem('employeeId'));
         const response = await axios.patch(`${BASE_URL}/employee/update-job-applied-status/${jobId}`,
             {
-                jobAppliedStatus:"Applied",
-                employee_id: employeeId
+               jobAppliedStatus: {
+                        status: "Applied",
+                        employeeDetails: {
+                            employee_id: employeeDetails._id,
+                            email: employeeDetails.email,
+                            mobileNumber: employeeDetails.mobileNumber,
+                            firstName: employeeDetails.firstName,
+                            lastName: employeeDetails.lastName,
+                            jobAppliedDate: new Date()
+                        }
+                    },
             },
             {
                 headers: {
@@ -166,9 +218,8 @@ export const jobAppliedStatus = (jobId) => async (dispatch) => {
                 }
             }
         )
-        console.log('job status',response)
         if (response && response.data && response.status === 200) {
-            dispatch(updateJobPostStatus({ jobId, status: 'Applied' }));
+            dispatch(updateJobPostStatus({ jobId, status: response.data.jobAppliedStatus.status  }));
             toast.success(response.data.message, {
                 position: "top-center",
                 autoClose: 3000,

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import '../CSSModules/formStyles/formPageStyles.css'
 import { loginSuccess, setLoading } from '../redux/slices/authSlice'
-import { addJobPost, setDeleteJobPosts, setJobPosts, setUpdateJobPost } from '../redux/slices/employerSlice'
+import { addJobPost, setDeleteJobPosts, setJobAppliedUsers, setJobPosts, setUpdateJobPost } from '../redux/slices/employerSlice'
 
 
 const BASE_URL = "http://localhost:5000/api"
@@ -115,7 +115,7 @@ export const createJobPosts = (jobPosts) => async (dispatch) => {
 }
 
 
-//create job posts
+//update job posts
 export const updateJobPostsData = (jobPosts) => async (dispatch) => {
     dispatch(setLoading(true));
     try {
@@ -210,6 +210,50 @@ export const deleteJobPostsData = (jobId) => async (dispatch) => {
         )
         if (response && response.data && response.status === 200) {
             dispatch(setDeleteJobPosts(jobId))
+            toast.success(response.data.message, {
+                position: "top-center",
+                autoClose: 3000,
+                className: 'custom-toast'
+            });
+            return {
+                success: true,
+                data: response.data
+            };
+        }
+    }
+    catch (error) {
+        const errors = error.response.data.error
+        toast.error(errors, {
+            position: "top-center",
+            autoClose: 3000,
+            className: 'custom-toast'
+        });
+        return {
+            success: false,
+            errors: errors
+        };
+    }
+    finally {
+        dispatch(setLoading(false));
+    }
+}
+
+
+// get job applied lists
+export const getJobAppliedPostsList = () => async(dispatch) => {
+    dispatch(setLoading(true));
+    try {
+        const token = localStorage.getItem('loginToken');
+        const response = await axios.get(`${BASE_URL}/employer/applied-job-posts`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            }
+        )
+
+        if (response && response.data && response.status === 200) {
+            dispatch(setJobAppliedUsers(response.data.jobAppliedPostsList))
             toast.success(response.data.message, {
                 position: "top-center",
                 autoClose: 3000,
